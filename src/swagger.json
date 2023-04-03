@@ -1,0 +1,405 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API documentation Parco test",
+    "description": "API in NodeJs using TypeScript"
+  },
+  "components":{
+    "securitySchemes": {
+      "ApiKeyAuth":{
+        "type": "apiKey",
+        "in": "header",
+        "name": "authorization"
+      }
+    }
+  },
+    
+
+  "host": "localhost:3000",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Api usuarios del sistema"
+    },
+    {
+      "name": "parkings",
+      "description": "Api para parkings del sistema"
+    }
+  ],
+  "paths": {
+    "/users/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+
+        "summary": "obtiene todos los propietarios de la bd",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        }
+      }
+    },
+    "/users/create": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Agregar user a la bd",
+        "requestBody":{
+          "required": "true",
+          "content":{
+            "application/json":{
+
+              "schema": {
+                "$ref": "#/definitions/userCreate"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/userCreate"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+
+        "requestBody":{
+          "required": "true",
+          "content":{
+            "application/json":{
+
+              "schema": {
+                "$ref": "#/definitions/userLogin"
+              }
+            }
+          }
+        },
+                
+        "summary": "LogIn propietario en la api",
+
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/userLogin"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/users/delete/{id}":{
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "es necesario para este filtro",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Eliminar propietario en el sistema",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/userCreate"
+            }
+          }
+        }
+      }
+    },
+    "/parkings/?skip={skip]&limit={limit}&order={order}&orderBy{orderBy}": {
+      "get": {
+        "tags": [
+          "parkings"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Obtiene todas las parkings de la bd",
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "es necesario para este filtro",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "es necesario para este filtro",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "es necesario para este filtro",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "es necesario para este filtro",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/parkingAdd"
+            }
+          }
+        }
+      }
+    },
+    "/parkings/create": {
+      "post": {
+        "tags": [
+          "parkings"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Agrega un parking a la DB",
+        "requestBody":{
+          "required": "true",
+          "content":{
+            "application/json":{
+
+              "schema": {
+                "$ref": "#/definitions/parkingAdd"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/parkingAdd"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "422": {
+            "description": "Campos con formato incorrecto."
+          }
+          
+        }
+      }
+    }, 
+    "/parkings/update/{id}": {
+      "patch": {
+        "tags": [
+          "parkings"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "actualiza un parking",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "es necesario para este filtro",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody":{
+          "required": "true",
+          "content":{
+            "application/json":{
+
+              "schema": {
+                "$ref": "#/definitions/parkingUpdate"
+              }
+            }
+          }
+        },
+        
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/propiedadUpdate"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    }, 
+    "/parkings/checkin/{parkingId}":{
+      "get": {
+        "tags": [
+          "parkings"
+        ],
+        "parameters": [
+          {
+            "name": "parkingId",
+            "in": "path",
+            "description": "es necesario para este filtro",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Hacer checkin en el sistema",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "email": {
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "userLogin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "userCreate": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "userType": {
+          "type": "string"
+        }
+      }
+    },
+    "parkingUpdate": {
+      "type": "object",
+      "properties": {
+        "spots": {
+          "type": "integer"
+        },
+        "contact": {
+          "type": "string"
+        }
+      }
+    },
+    "parkingAdd": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "spots": {
+          "type": "integer"
+        },
+        "parkingType": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
